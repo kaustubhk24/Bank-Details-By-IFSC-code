@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>IFSC Details | JustInClicks.com</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="style.css" type="text/css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+
+
+	<!---NAVBAR-->
+
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="#">IFSC Code Finder</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="index.html">Find Bank Details By IFSC</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="404.html">Find IFSC</a>
+				</li>
+
+			</ul>
+
+		</div>
+	</nav>
+
+	<!--NAVBAR-->
+
+
+
+	<!----Main Content-->
+
+	<section class="container-fluid bg py-3">
+		<section class="row justify-content-center">
+			<section class="col-12 col-sm-6 col-md-4">
+
+				<form class="form-container py-4" id="ifsc-form">
+
+					<div class="form-group">
+						<h6>Enter Valid IFSC Code</h6>
+						<input type="text" class="form-control" id="ifsc" placeholder="" minlength="11" maxlength="11"
+							required>
+					</div>
+					<div id="invalid" class="alert alert-warning" style="display: none;" role="alert">
+						This is Invalid IFSC Code
+					</div>
+
+					<button onclick="chk()" type="submit" class="btn btn-success btn-block">Submit</button>
+					<div id="response" style="display: none;">
+
+					</div>
+
+				</form>
+			</section>
+		</section>
+	</section>
+
+
+
+
+
+
+
+	<!----Main Content-->
+
+	<footer class="footer bg-dark">
+		<div class="container">
+			<span style="color: white !important;" class="text-muted">Copyright &copy; 2020 </span>
+        <a  class="text-white" href="https://www.justinclicks.com">JustInClicks.com</a>
+        </div>
+	</footer>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+
+
+	<script>
+		function chk() {
+			var ifsc = document.getElementById('ifsc').value;
+			//window.alert(ifsc);
+			if (ifsc.length == 11) {
+
+				const Http = new XMLHttpRequest();
+				const url = 'https://ifsc.razorpay.com/' + ifsc;
+				var request = new XMLHttpRequest();
+
+				request.onreadystatechange = function () {
+					if (this.readyState == 4 && this.status == 200) {
+
+						//window.alert(this.responseText);
+						var myArr = JSON.parse(this.responseText);
+
+						document.getElementById("invalid").style.display = "none";
+
+
+
+						//var ifsc to be use
+						var bankName = myArr.BANK;
+						var branch = myArr.BRANCH;
+						var address = myArr.ADDRESS;
+						var center = myArr.CENTRE;
+						var district = myArr.DISTRICT;
+						var state = myArr.STATE;
+						var contact = myArr.CONTACT;
+						var upi = myArr.UPI;
+						var rtgs = myArr.RTGS;
+						var city = myArr.CITY;
+						var neft = myArr.NEFT;
+						var imps = myArr.IMPS;
+						var micr = myArr.MICR;
+						var bankcode = myArr.BANKCODE;
+
+
+						if (micr == "") {
+							micr = "Not found";
+						}
+
+						upi = (upi == true) ? "Yes" : "No";
+						rtgs = (rtgs == true) ? "Yes" : "No";
+						neft = (neft == true) ? "Yes" : "No";
+						imps = (imps == true) ? "Yes" : "No";
+						micr = (imps == "") ? "Not Found" : micr;
+						bankcode = (bankcode == "") ? "Not Found" : bankcode;
+						bankName = (bankName == "") ? "Not Found" : bankName;
+						branch = (branch == "") ? "Not Found" : branch;
+						address = (address == "") ? "Not Found" : address;
+						center = (center == "") ? "Not Found" : center;
+						district = (district == "") ? "Not Found" : district;
+						state = (state == "") ? "Not Found" : state;
+						contact = (contact == "") ? "Not Found" : contact;
+						var generated = '<table class=table table-striped> <br> <h5>Basic Details</h5> <thead> <tr> <th scope=col>Point </th> <th scope=col>Details</th> </tr> </thead> <tbody> <tr> <th scope=row>IFSC</th> <td>' + ifsc + '</td> </tr> <tr> <th scope=row>Bank Name</th> <td>' + bankName + '</td> </tr> <tr> <th scope=row>Bank Code</th> <td>' + bankcode + '</td> </tr> <tr> <th scope=row>Branch</th> <td>' + branch + '</td> </tr> <tr> <th scope=row>Center</th> <td>' + center + '</td> </tr> <tr> <th scope=row>City</th> <td>' + city + '</td> </tr> <tr> <th scope=row>Address</th> <td>' + address + '</td> </tr> <tr> <th scope=row>District</th> <td>' + district + '</td> </tr> <tr> <th scope=row>State </th> <td>' + state + '</td> </tr> <tr> <th scope=row>Contact No</th> <td>' + contact + '</td> </tr> <tr> <th scope=row>MICR</th> <td>' + micr + '</td> </tr> <br> <tr> <th scope=row>UPI</th> <td>' + upi + '</td> </tr> <tr> <th scope=row>RTGS</th> <td>' + rtgs + '</td> </tr> <tr> <th scope=row>NEFT</th> <td>' + neft + '</td> </tr> <tr> <th scope=row>IMPS</th> <td>' + imps + '</td> </tr> </tbody> </table> ';
+						document.getElementById('response').innerHTML = generated;
+						document.getElementById('response').style.display = "block";
+
+					}
+					else {
+
+						document.getElementById("invalid").style.display = "block";
+						document.getElementById('response').style.display = "none";
+
+					}
+				};
+
+				request.open('GET', url);
+				request.send();
+
+			}
+			else {
+				document.getElementById('ifsc-response').style.display = "none";
+
+			}
+
+
+		}
+
+
+
+	</script>
+</body>
+
+</html>
